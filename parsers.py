@@ -49,14 +49,19 @@ def countWordsUnstructured(filename):
     #return wordCounts 
 ################################################################################
 # PART 2
-################################################################################
 #I worked with Hannah Weber, Taylor Lawrence
-
+################################################################################
+ # This function should transform a dictionary containing word counts to a
+    # CSV file. The first row of the CSV should be a header noting: 
+    # Word, Count
+    # Inputs: A word count list and a name for the target file
+    # Outputs: A new CSV file named targetfile containing the wordcount data
+    
 # Import the csv (at the top) 
 def generateSimpleCSV(targetfile, wordCounts):
     
     #open the csv 
-    with open (targetfile, 'w') as csv_file:
+    with open (targetfile, "w") as csv_file:
         
         #Print the headers and write to the csv using commas as a seperator 
         writer = csv.writer(csv_file)
@@ -73,19 +78,13 @@ def generateSimpleCSV(targetfile, wordCounts):
     
     #Return pointer to the file 
     return csv_file
-
-    
-    # This function should transform a dictionary containing word counts to a
-    # CSV file. The first row of the CSV should be a header noting: 
-    # Word, Count
-    # Inputs: A word count list and a name for the target file
-    # Outputs: A new CSV file named targetfile containing the wordcount data
     
 # Test your part 2 code below
 generateSimpleCSV('PleaseWork', countWordsUnstructured('state-of-the-union-corpus-1989-2017/Bush_1989.txt'))
 
 ################################################################################
 # PART 3
+# I worked with Hannah and Taylor 
 ################################################################################
 def countWordsMany(directory):
     #create the empty dictionary 
@@ -95,8 +94,8 @@ def countWordsMany(directory):
     # Loop through the list of files
         #For each file, call countWordsUnstructured to get the word counts for that file
     for file in dir_files:
-        wordCountDict[file] = countWordsUnstructured(directory+"/" + file)
-    
+        wordCountDict[file] = countWordsUnstructured(directory+"/" + file)  
+        #One of the inputs is the directory name and the filepath 
     return wordCountDict
         
 manyWordsDict = countWordsMany('./state-of-the-union-corpus-1989-2017')
@@ -131,6 +130,7 @@ print(manyWordsDict)
 
 ################################################################################
 # PART 4
+# I worked in class and with Hannah
 ################################################################################
 
     # This function should create a CSV containing the word counts generated in
@@ -149,7 +149,7 @@ def generateDirectoryCSV(wordCounts, targetfile):
         #Print the headers and write to the csv using commas as a seperator 
         writer = csv.writer(csv_file)
         
-        #Make the header 
+        #Write the header rows
         writer.writerow(['Filename', 'Word', 'Count'])
         
         #Iterate through the word counts and add to the csv
@@ -170,48 +170,88 @@ def generateDirectoryCSV(wordCounts, targetfile):
     # Outputs: A new CSV file named targetfile containing the wordcount data
     
 # Test your part 4 code below
-generateSimpleCSV('Targetfile', countWordsMany('state-of-the-union-corpus-1989-2017/Bush_1989.txt'), 'part4CSV')
+generateDirectoryCSV(countWordsMany('state-of-the-union-corpus-1989-2017'), 'part4CSV')
 
-    
 ################################################################################
 # PART 5
+# I worked with Hannah Weber, Taylor Lawrence, Amy Zhai and Steven Rothaus
 ################################################################################
-#def generateJSONFile(wordCounts, targetfile): 
-    # This function should create an ______ containing the word counts generated in
+# This function should create a JSON containing the word counts generated in
     # part 3. Architect your JSON file such that the hierarchy will allow
     # the user to quickly navigate and compare word counts between files. 
     # Inputs: A word count dictionary and a name for the target file
     # Outputs: An JSON file named targetfile containing the word count data
+
+import json
+
+def generateJSONFile(wordCounts, targetfile): 
+    
+    #open a file as a json_file
+    with open(targetfile, 'w') as JSONFile:
+        
+        #create the json
+        JSONFile = open(targetfile, "w")
+        #transforms the word count directory to a JSON
+        JSONFile.write(str(wordCounts).replace("\'","\""))
+        
+        
+    #close file
+    JSONFile.close()
+    
+    #return the json file
+    return JSONFile
+
     
 # Test your part 5 code below
+generateJSONFile(manyWordsDict, "targetfile.json")
 
 ################################################################################
 # PART 6
 ################################################################################
-#def searchCSV(csvfile, word): 
-    # This function should search a CSV file from part 4 and find the filename
+# This function should search a CSV file from part 4 and find the filename
     # with the largest count of a specified word
     # Inputs: A CSV file to search and a word to search for
     # Outputs: The filename containing the highest count of the target word
-    
-#def searchJSON(JSONfile, word): 
+def searchCSV(csvfile, word): 
+    #open the csv file
+    with open(csvfile) as csv_file:
+        file = csv.reader(csv_file)
+
     # This function should search a JSON file from part 5 and find the filename
     # with the largest count of a specified word
     # Inputs: An JSON file to search and a word to search for
-    # Outputs: The filename containing the highest count of the target word
+    # Outputs: The filename containing the highest count of the target word   
+def searchJSON(JSONfile, word): 
+    
+    #open the json file
+    with open(JSONfile) as json_file:
+        jfile = json.load(json_file) 
+            
+    #Make a earch for words
+    for 
+    
+    #search the file by filename to find the largest value
+    max_count = max(jsonFile['Count'])
+    
+    #Return the highest values' filename
+    
+    #close the file
+    JSONFile.close()
+    
     
 # Test your part 6 code to find which file has the highest count of a given word
 
 # +1 bonus point for figuring out how many datapoints you had to process to 
 # compute this value
 
-bush1989 = countWordsUnstructured('state-of-the-union-corpus-1989-2017/Bush_1989.txt')
-print (bush1989)
 
 ################################################################################
 # PART 7 - FRIDAY SECTION
+# I worked with Jacob, Hannah and Taylor 
 ################################################################################
+#Database Schema: 
 
+#From the slides
 #Using SQLite in Python
 import sqlite3
 
@@ -220,8 +260,24 @@ conn = sqlite3.connect('presidents_speech.db')
 c = conn.cursor()
 
 # Ask the connection to execute a SQL statement
-c.execute('''(CREATE TABLE stocks (date text, trans text, columns go here)''')
+c.execute('''CREATE TABLE wordCounts (filename, word, counts)''')
+c.execute('''CREATE TABLE presidentInformation(index,number, start, end, president_name, prior occupation, party, VP )''')
 
+#The tables can be joined on either the presidents name or year of their presidency
+#Table 1 (wordCounts)
+    #Text filename
+    #Text word
+    #Integer counts
+    #Integers Counts
+#Table 2 (PresidentInfo- the csv file)
+    #Integer index
+    #Integer number
+    #Text start
+    #Text end
+    #Text President_name
+    #Text prior occumpation
+    #Text Party 
+    #Text VP
 # Save (commit) the changes
 conn.commit()
         
