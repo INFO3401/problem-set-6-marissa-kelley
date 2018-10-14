@@ -87,7 +87,20 @@ generateSimpleCSV('PleaseWork', countWordsUnstructured('state-of-the-union-corpu
 ################################################################################
 # PART 3
 ################################################################################
-#def countWordsMany(directory): 
+def countWordsMany(directory):
+    #create the empty dictionary 
+    wordCountDict = {}
+    #open directory and pull the list of name files
+    dir_files = listdir(directory)
+    # Loop through the list of files
+        #For each file, call countWordsUnstructured to get the word counts for that file
+    for file in dir_files:
+        wordCountDict[file] = countWordsUnstructured(directory+"/" + file)
+    
+    return wordCountDict
+        
+manyWordsDict = countWordsMany('./state-of-the-union-corpus-1989-2017')
+print(manyWordsDict)
    
     # This function should create a dictionary of word count dictionaries (key value pairs,
     #key is the reference- so the word is the key, value is the actual count) 
@@ -107,8 +120,7 @@ generateSimpleCSV('PleaseWork', countWordsUnstructured('state-of-the-union-corpu
     
     # Populate the dictionary 
     # You already have the list of filenames, so to get the filename, you need to use a for loop structure
-    # Loop through the list of files
-        #For each file, call countWordsUnstructured to get the word counts for that file
+    
         
         # Place the word count dictionary into the empty dictionary 
         
@@ -120,7 +132,7 @@ generateSimpleCSV('PleaseWork', countWordsUnstructured('state-of-the-union-corpu
 ################################################################################
 # PART 4
 ################################################################################
-#def generateDirectoryCSV(wordCounts, targetfile): 
+
     # This function should create a CSV containing the word counts generated in
     # part 3 with the header: 
     # Filename, Word, Count
@@ -128,14 +140,44 @@ generateSimpleCSV('PleaseWork', countWordsUnstructured('state-of-the-union-corpu
     # Outputs: A CSV file named targetfile containing the word count data
     
 #create a placeholder dictionary
-#wordsCountsMany = {}
+# Import the csv (at the top) 
+
+def generateDirectoryCSV(wordCounts, targetfile): 
+    #open the csv 
+    with open (targetfile, 'w') as csv_file:
+        
+        #Print the headers and write to the csv using commas as a seperator 
+        writer = csv.writer(csv_file)
+        
+        #Make the header 
+        writer.writerow(['Filename', 'Word', 'Count'])
+        
+        #Iterate through the word counts and add to the csv
+        for key,value in wordCounts.items():
+            writer.writerow([key,value])
+    
+    #Close the file
+    csv_file.close()
+    
+    #Return pointer to the file 
+    return csv_file
+
+    
+    # This function should transform a dictionary containing word counts to a
+    # CSV file. The first row of the CSV should be a header noting: 
+    # Word, Count
+    # Inputs: A word count list and a name for the target file
+    # Outputs: A new CSV file named targetfile containing the wordcount data
+    
 # Test your part 4 code below
+generateSimpleCSV('Targetfile', countWordsMany('state-of-the-union-corpus-1989-2017/Bush_1989.txt'), 'part4CSV')
+
     
 ################################################################################
 # PART 5
 ################################################################################
 #def generateJSONFile(wordCounts, targetfile): 
-    # This function should create an containing the word counts generated in
+    # This function should create an ______ containing the word counts generated in
     # part 3. Architect your JSON file such that the hierarchy will allow
     # the user to quickly navigate and compare word counts between files. 
     # Inputs: A word count dictionary and a name for the target file
@@ -166,3 +208,22 @@ generateSimpleCSV('PleaseWork', countWordsUnstructured('state-of-the-union-corpu
 bush1989 = countWordsUnstructured('state-of-the-union-corpus-1989-2017/Bush_1989.txt')
 print (bush1989)
 
+################################################################################
+# PART 7 - FRIDAY SECTION
+################################################################################
+
+#Using SQLite in Python
+import sqlite3
+
+#Set up a connection to the database
+conn = sqlite3.connect('presidents_speech.db')
+c = conn.cursor()
+
+# Ask the connection to execute a SQL statement
+c.execute('''(CREATE TABLE stocks (date text, trans text, columns go here)''')
+
+# Save (commit) the changes
+conn.commit()
+        
+# Close the connection
+conn.close()
