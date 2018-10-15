@@ -42,6 +42,7 @@ def countWordsUnstructured(filename):
     
     #return the word count dictionary
     #return wordCounts 
+    
 ################################################################################
 # PART 2
 #I worked with Hannah Weber, Taylor Lawrence
@@ -268,15 +269,15 @@ print(searchJSON("part_5_file","for"))
 
 #From the slides
 #Using SQLite in Python
-#import sqlite3
+import sqlite3
 
 #Set up a connection to the database
-#conn = sqlite3.connect('presidents_speech.db')
-#c = conn.cursor()
+conn = sqlite3.connect('presidents_speech.db')
+c = conn.cursor()
 
 # Ask the connection to execute a SQL statement
-#c.execute('''CREATE TABLE wordCounts (filename, word, counts)''')
-#c.execute('''CREATE TABLE presidentInformation(index,number, start, end, president_name, prior occupation, party, VP )''')
+c.execute('''CREATE TABLE wordCounts (filename, word, counts)''')
+c.execute('''CREATE TABLE presidentInformation(index,number, start, end, president_name, prior occupation, party, VP )''')
 
 #The tables can be joined on either the presidents name or year of their presidency
 #Table 1 (wordCounts)
@@ -293,8 +294,9 @@ print(searchJSON("part_5_file","for"))
     #Text prior occumpation
     #Text Party 
     #Text VP
+
 # Save (commit) the changes
-#conn.commit()
+conn.commit()
         
 # Close the connection
-#conn.close()
+conn.close()
