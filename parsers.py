@@ -196,6 +196,7 @@ generateJSONFile(manyWordsDict, "part_5_file")
 
 ################################################################################
 # PART 6
+# I worked with Jacob, Hannah and Taylor 
 ################################################################################
 # This function should search a CSV file from part 4 and find the filename
     # with the largest count of a specified word
